@@ -12,6 +12,7 @@ struct TaskItem: Identifiable, Codable {
     var updatedAt: Date
     var dueDate: Date?
     var notifyMinutesBefore: Int?
+    var autoUpgradedUrgency: Bool
 
     init(
         title: String,
@@ -31,6 +32,7 @@ struct TaskItem: Identifiable, Codable {
         self.updatedAt           = Date()
         self.dueDate             = dueDate
         self.notifyMinutesBefore = notifyMinutesBefore
+        self.autoUpgradedUrgency = false
     }
 }
 

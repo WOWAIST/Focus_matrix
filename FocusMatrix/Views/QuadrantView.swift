@@ -3,6 +3,8 @@ import SwiftUI
 struct QuadrantView: View {
     let quadrant: Quadrant
     @Binding var editingTask: TaskItem?
+    let onTapEmpty: (Quadrant) -> Void
+
     @EnvironmentObject var store: TaskStore
     @State private var isTargeted = false
 
@@ -67,24 +69,32 @@ struct QuadrantView: View {
                     .draggable(task.id.uuidString)
                 }
 
-                if tasks.isEmpty {
-                    emptyState
-                }
+                addButton
             }
             .padding(10)
         }
     }
 
-    private var emptyState: some View {
-        VStack(spacing: 6) {
-            Image(systemName: "tray")
-                .font(.system(size: 24))
-                .foregroundColor(quadrant.color.opacity(0.35))
-            Text("Drop tasks here")
-                .font(.caption)
-                .foregroundColor(.secondary)
+    private var addButton: some View {
+        Button {
+            onTapEmpty(quadrant)
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "plus")
+                    .font(.system(size: 11, weight: .semibold))
+                Text("작업 추가")
+                    .font(.caption)
+            }
+            .foregroundColor(quadrant.color.opacity(0.7))
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 8)
+            .background(quadrant.color.opacity(0.05))
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .strokeBorder(quadrant.color.opacity(0.2), style: StrokeStyle(lineWidth: 1, dash: [4]))
+            )
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 32)
+        .buttonStyle(.plain)
     }
 }

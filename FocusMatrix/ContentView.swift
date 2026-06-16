@@ -23,6 +23,8 @@ struct ContentView: View {
     @State private var selectedTab: AppTab = .matrix
     @State private var showAddTask = false
     @State private var editingTask: TaskItem?
+    @State private var addForQuadrant: Quadrant? = nil
+    @State private var showAddForQuadrant = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -31,18 +33,25 @@ struct ContentView: View {
 
             switch selectedTab {
             case .matrix:
-                MatrixView(editingTask: $editingTask)
+                MatrixView(editingTask: $editingTask) { quadrant in
+                    addForQuadrant    = quadrant
+                    showAddForQuadrant = true
+                }
             case .completed:
                 CompletedView()
             }
         }
         .frame(minWidth: 900, minHeight: 620)
         .sheet(isPresented: $showAddTask) {
-            AddTaskView(task: nil) { showAddTask = false }
+            AddTaskView(task: nil, presetQuadrant: nil) { showAddTask = false }
                 .environmentObject(store)
         }
         .sheet(item: $editingTask) { task in
-            AddTaskView(task: task) { editingTask = nil }
+            AddTaskView(task: task, presetQuadrant: nil) { editingTask = nil }
+                .environmentObject(store)
+        }
+        .sheet(isPresented: $showAddForQuadrant) {
+            AddTaskView(task: nil, presetQuadrant: addForQuadrant) { showAddForQuadrant = false }
                 .environmentObject(store)
         }
         .onReceive(NotificationCenter.default.publisher(for: .showAddTask)) { _ in

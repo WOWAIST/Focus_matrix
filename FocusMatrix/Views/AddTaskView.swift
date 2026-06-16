@@ -15,6 +15,7 @@ let notifyOptions: [(label: String, minutes: Int?)] = [
 struct AddTaskView: View {
     @EnvironmentObject var store: TaskStore
     var task: TaskItem?
+    var presetQuadrant: Quadrant?
     let onSave: () -> Void
 
     @State private var title               = ""
@@ -159,6 +160,10 @@ struct AddTaskView: View {
     }
 
     private func populateIfEditing() {
+        if let quadrant = presetQuadrant, task == nil {
+            isImportant = quadrant.isImportant
+            isUrgent    = quadrant.isUrgent
+        }
         guard let task else { return }
         title               = task.title
         note                = task.note ?? ""

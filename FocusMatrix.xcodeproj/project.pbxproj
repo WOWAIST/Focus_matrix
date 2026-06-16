@@ -14,10 +14,15 @@
 		AA200004 /* MatrixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100004 /* MatrixView.swift */; };
 		AA200005 /* QuadrantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100005 /* QuadrantView.swift */; };
 		AA200006 /* TaskCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100006 /* TaskCardView.swift */; };
-		AA200007 /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100007 /* AddTaskView.swift */; };
 		AA200008 /* CompletedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100008 /* CompletedView.swift */; };
 		AA200009 /* MenuBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100009 /* MenuBarContentView.swift */; };
 		AA20000A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA10000A /* Assets.xcassets */; };
+		AA20000C /* QuadrantStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA10000D /* QuadrantStyle.swift */; };
+		AA20000D /* TaskRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA10000E /* TaskRepository.swift */; };
+		AA20000E /* AddTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA10000F /* AddTaskView.swift */; };
+		AA20000F /* ClassifySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100010 /* ClassifySection.swift */; };
+		AA200010 /* DueDateSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100011 /* DueDateSection.swift */; };
+		AA200011 /* QuadrantToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA100012 /* QuadrantToggle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,12 +33,17 @@
 		AA100004 /* MatrixView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatrixView.swift; sourceTree = "<group>"; };
 		AA100005 /* QuadrantView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadrantView.swift; sourceTree = "<group>"; };
 		AA100006 /* TaskCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCardView.swift; sourceTree = "<group>"; };
-		AA100007 /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
 		AA100008 /* CompletedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedView.swift; sourceTree = "<group>"; };
 		AA100009 /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContentView.swift; sourceTree = "<group>"; };
 		AA10000A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA10000B /* FocusMatrix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FocusMatrix.entitlements; sourceTree = "<group>"; };
 		AA500001 /* FocusMatrix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusMatrix.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA10000D /* QuadrantStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadrantStyle.swift; sourceTree = "<group>"; };
+		AA10000E /* TaskRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRepository.swift; sourceTree = "<group>"; };
+		AA10000F /* AddTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskView.swift; sourceTree = "<group>"; };
+		AA100010 /* ClassifySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassifySection.swift; sourceTree = "<group>"; };
+		AA100011 /* DueDateSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DueDateSection.swift; sourceTree = "<group>"; };
+		AA100012 /* QuadrantToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuadrantToggle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +71,7 @@
 				AA100001 /* FocusMatrixApp.swift */,
 				AA100002 /* ContentView.swift */,
 				AA300003 /* Models */,
+				AA300007 /* Services */,
 				AA300004 /* Views */,
 				AA300005 /* MenuBar */,
 				AA10000A /* Assets.xcassets */,
@@ -78,16 +89,36 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		AA300007 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				AA10000E /* TaskRepository.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		AA300004 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				AA100004 /* MatrixView.swift */,
 				AA100005 /* QuadrantView.swift */,
 				AA100006 /* TaskCardView.swift */,
-				AA100007 /* AddTaskView.swift */,
+				AA10000D /* QuadrantStyle.swift */,
 				AA100008 /* CompletedView.swift */,
+				AA300008 /* AddTask */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		AA300008 /* AddTask */ = {
+			isa = PBXGroup;
+			children = (
+				AA10000F /* AddTaskView.swift */,
+				AA100010 /* ClassifySection.swift */,
+				AA100011 /* DueDateSection.swift */,
+				AA100012 /* QuadrantToggle.swift */,
+			);
+			path = AddTask;
 			sourceTree = "<group>";
 		};
 		AA300005 /* MenuBar */ = {
@@ -179,12 +210,17 @@
 				AA200002 /* ContentView.swift in Sources */,
 				AA200003 /* TaskItem.swift in Sources */,
 				AA20000B /* TaskStore.swift in Sources */,
+				AA20000D /* TaskRepository.swift in Sources */,
 				AA200004 /* MatrixView.swift in Sources */,
 				AA200005 /* QuadrantView.swift in Sources */,
 				AA200006 /* TaskCardView.swift in Sources */,
-				AA200007 /* AddTaskView.swift in Sources */,
+				AA20000C /* QuadrantStyle.swift in Sources */,
 				AA200008 /* CompletedView.swift in Sources */,
 				AA200009 /* MenuBarContentView.swift in Sources */,
+				AA20000E /* AddTaskView.swift in Sources */,
+				AA20000F /* ClassifySection.swift in Sources */,
+				AA200010 /* DueDateSection.swift in Sources */,
+				AA200011 /* QuadrantToggle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

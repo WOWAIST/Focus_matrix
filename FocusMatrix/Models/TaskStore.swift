@@ -4,16 +4,11 @@ import Combine
 final class TaskStore: ObservableObject {
     @Published var tasks: [TaskItem] = []
 
-    private let saveURL: URL
+    private let repository = TaskRepository()
     private var timer: AnyCancellable?
 
     init() {
-        let appSupport = FileManager.default
-            .urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("FocusMatrix")
-        try? FileManager.default.createDirectory(at: appSupport, withIntermediateDirectories: true)
-        saveURL = appSupport.appendingPathComponent("tasks.json")
-        load()
+        tasks = repository.load()
         startAutoUpgradeTimer()
     }
 
@@ -37,39 +32,39 @@ final class TaskStore: ObservableObject {
 
     func add(_ task: TaskItem) {
         tasks.append(task)
-        save()
+        repository.save(tasks)
     }
 
     func update(_ updated: TaskItem) {
         guard let idx = tasks.firstIndex(where: { $0.id == updated.id }) else { return }
         tasks[idx] = updated
-        save()
+        repository.save(tasks)
     }
 
     func delete(_ id: UUID) {
         tasks.removeAll { $0.id == id }
-        save()
+        repository.save(tasks)
     }
 
     func setCompleted(_ id: UUID, _ completed: Bool) {
         guard let idx = tasks.firstIndex(where: { $0.id == id }) else { return }
         tasks[idx].isCompleted = completed
         tasks[idx].updatedAt   = Date()
-        save()
+        repository.save(tasks)
     }
 
     func move(_ id: UUID, to quadrant: Quadrant) {
         guard let idx = tasks.firstIndex(where: { $0.id == id }) else { return }
-        tasks[idx].isImportant        = quadrant.isImportant
-        tasks[idx].isUrgent           = quadrant.isUrgent
-        tasks[idx].autoUpgradedUrgency = false  // 수동 이동 시 자동 업그레이드 표시 해제
-        tasks[idx].updatedAt          = Date()
-        save()
+        tasks[idx].isImportant         = quadrant.isImportant
+        tasks[idx].isUrgent            = quadrant.isUrgent
+        tasks[idx].autoUpgradedUrgency = false
+        tasks[idx].updatedAt           = Date()
+        repository.save(tasks)
     }
 
     func deleteCompleted(matching ids: [UUID]) {
         tasks.removeAll { ids.contains($0.id) }
-        save()
+        repository.save(tasks)
     }
 
     // MARK: - Auto-upgrade urgency
@@ -84,7 +79,7 @@ final class TaskStore: ObservableObject {
 
     private func checkAndUpgradeUrgency() {
         let now       = Date()
-        let threshold = 24.0 * 60 * 60  // 24시간
+        let threshold = 24.0 * 60 * 60
         var changed   = false
 
         for i in tasks.indices {
@@ -93,7 +88,7 @@ final class TaskStore: ObservableObject {
                 !tasks[i].isUrgent,
                 let due = tasks[i].dueDate,
                 due.timeIntervalSince(now) <= threshold,
-                due > now  // 이미 지난 마감은 제외
+                due > now
             else { continue }
 
             tasks[i].isUrgent            = true
@@ -101,21 +96,6 @@ final class TaskStore: ObservableObject {
             tasks[i].updatedAt           = now
             changed = true
         }
-        if changed { save() }
-    }
-
-    // MARK: - Persistence
-
-    private func save() {
-        guard let data = try? JSONEncoder().encode(tasks) else { return }
-        try? data.write(to: saveURL, options: .atomic)
-    }
-
-    private func load() {
-        guard
-            let data    = try? Data(contentsOf: saveURL),
-            let decoded = try? JSONDecoder().decode([TaskItem].self, from: data)
-        else { return }
-        tasks = decoded
+        if changed { repository.save(tasks) }
     }
 }
